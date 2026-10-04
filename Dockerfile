@@ -2,11 +2,11 @@
 
 ARG ZOOKEEPER_VERSION=3.6.3
 
-FROM docker.io/bitnami/minideb:bullseye as builder
+FROM docker.io/bitnami/minideb:trixie as builder
 
-COPY --link --from=ghcr.io/bitcompat/gosu:1.14.0 /opt/bitnami/ /opt/bitnami/
-COPY --link --from=ghcr.io/bitcompat/wait-for-port:1.0.3-bullseye-r1 /opt/bitnami/ /opt/bitnami/
-COPY --link --from=ghcr.io/bitcompat/java:11.0.16.1-1-bullseye-r1 /opt/bitnami/java/ /opt/bitnami/java/
+COPY --link --from=ghcr.io/bitcompat/gosu:1.18.0-trixie /opt/bitnami/ /opt/bitnami/
+COPY --link --from=ghcr.io/bitcompat/wait-for-port:1.0.10-trixie /opt/bitnami/ /opt/bitnami/
+COPY --link --from=ghcr.io/bitcompat/java:11-trixie /opt/bitnami/java/ /opt/bitnami/java/
 
 ARG JAVA_EXTRA_SECURITY_DIR="/bitnami/java/extra-security"
 
@@ -33,26 +33,26 @@ RUN <<EOT bash
     cp /opt/bitnami/zookeeper/LICENSE.txt /opt/bitnami/zookeeper/licenses/zookeeper-${ZOOKEEPER_VERSION}.txt
 EOT
 
-FROM docker.io/bitnami/minideb:bullseye as stage-0
+FROM docker.io/bitnami/minideb:trixie as stage-0
 
 COPY --link --from=builder /opt/bitnami /opt/bitnami
 
 RUN <<EOT bash
     set -eux
-    install_packages ca-certificates gzip libc6 procps tar zlib1g netcat xmlstarlet
+    install_packages ca-certificates gzip libc6 procps tar zlib1g netcat-openbsd xmlstarlet
     mkdir -p /bitnami/zookeeper/data
     ln -sv /opt/bitnami/scripts/zookeeper/entrypoint.sh /entrypoint.sh
     ln -sv /opt/bitnami/scripts/zookeeper/run.sh /run.sh
 EOT
 
-LABEL org.opencontainers.image.ref.name="${ZOOKEEPER_VERSION}-debian-11-r1" \
+LABEL org.opencontainers.image.ref.name="${ZOOKEEPER_VERSION}-trixie" \
       org.opencontainers.image.title="zookeeper" \
       org.opencontainers.image.version="${ZOOKEEPER_VERSION}"
 
 ARG TARGETARCH
 ENV HOME="/" \
     OS_ARCH="${TARGETARCH}" \
-    OS_FLAVOUR="debian-11" \
+    OS_FLAVOUR="debian-13" \
     OS_NAME="linux" \
     APP_VERSION="${ZOOKEEPER_VERSION}" \
     BITNAMI_APP_NAME="zookeeper" \

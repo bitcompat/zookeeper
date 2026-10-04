@@ -63,8 +63,8 @@ jobs:
             public.ecr.aws/bitcompat/${{ github.event.repository.name }}
           tags: |
             ${{ matrix.zookeeper_version.latest && 'latest' || '' }}
-            ${{ matrix.zookeeper_version.major }}.${{ matrix.zookeeper_version.minor }}.${{ matrix.zookeeper_version.patch }}-bullseye-r${{ matrix.zookeeper_version.revision }}
-            ${{ matrix.zookeeper_version.major }}.${{ matrix.zookeeper_version.minor }}.${{ matrix.zookeeper_version.patch }}-bullseye
+            ${{ matrix.zookeeper_version.major }}.${{ matrix.zookeeper_version.minor }}.${{ matrix.zookeeper_version.patch }}-trixie-r${{ matrix.zookeeper_version.revision }}
+            ${{ matrix.zookeeper_version.major }}.${{ matrix.zookeeper_version.minor }}.${{ matrix.zookeeper_version.patch }}-trixie
             ${{ matrix.zookeeper_version.major }}.${{ matrix.zookeeper_version.minor }}.${{ matrix.zookeeper_version.patch }}
             ${{ matrix.zookeeper_version.major }}.${{ matrix.zookeeper_version.minor }}
             type=sha
